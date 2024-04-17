@@ -21,7 +21,7 @@ public class FullRemoteCourse extends OnlineCourse {
 	
 	@Override
 	public String toString() {
-		return "Course: " + courseNum + "\nNumber of students: " + numStuds + "\nMaximum number of students: " + maxStuds + "\nCredits: " + creds + "\nEmail: " + email;
+		return super.toString() + "\nEmail: " + email;
 	}
 	
 }
