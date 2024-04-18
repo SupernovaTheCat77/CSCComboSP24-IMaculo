@@ -1,77 +1,74 @@
+import java.util.Arrays;
 import java.util.Random;
 
 public class Deck {
-	
-	private Card[] cards;
+	private final int NUM_OF_CARDS = 52;
+	Card[] cards = new Card[NUM_OF_CARDS];
 	private static Random rand = new Random();
-	public Deck(Card[] cards) {
-		this.cards = cards;
-	}
 	
 	public Deck() {
-		this.cards = new Card[52];
-		int index = 0;
-		for (int suit = 0; suit <= 3; suit++) {
-			for (int rank = 1; rank <= 13; rank++) {
-				cards[index] = new Card(rank, suit);
-				index++;
-			}
-		}
+		int count = 0;
+		for (int i = 0; i < 4; i++) 
+			for (int j = 1; j < 14; j++, count++) cards[count] = new Card(j, i);
+	}
+	
+	public Deck(int numCards) {
+		cards = new Card[numCards];
 	}
 	
 	public Card[] getCards() {
 		return cards;
 	}
+	public void setCards(Card[] cards) {
+		this.cards = cards;
+	}
 	
-	public void shuffle()
-	{
-		for (int i = 0; i < cards.length - 1; i ++) {
-			//choose a random number between i and length - 1
-			int num = randomInt(i, cards.length-1);
-			//swap the ith card and the randomly chosen card
-			swapCards(i, num);
-			
+	public void shuffle() {
+		for (int i = 0; i < cards.length; i++) {
+			int index = rand.nextInt(cards.length);
+			swap(i, index);
 		}
 	}
 	
-	public void selectionSort() {
+	private void swap(int a, int b) {
+		Card temp = cards[a];
+		cards[a] = cards[b];
+		cards[b] = temp;
+	}
+	
+	public void bubbleSort() {
 		for (int i = 0; i < cards.length-1; i++) {
-			//find the lowest card at or to the right of i
-			int lowest = indexLowest(i, cards.length-1);
-			//swap the i card and the lowest card.
-			swapCards(i, lowest);
-		}
-	}
-	
-	private int indexLowest(int low, int high) {
-		int lowest = 0;
-		for(int i = low; i < high; i++) {
-			if(cards[i].compareTo(cards[lowest])<0) {
-				lowest = i;
+			for (int j = 1; j < cards.length; j++) {
+				if (cards[j-1].sortCompare(cards[j]) > 0) swap(j-1, j);
 			}
 		}
-		return lowest;
 	}
 	
-	private static int randomInt(int low, int high) {
-		//return a random number between low and high
-		//including both		
-		int num = rand.nextInt(high - low) + low;
-		return num;
+	public void selSort() {
+		  for (int i = 0; i < cards.length-1; i++) {
+		    int largest = 0;
+		    for (int j = 1; j < cards.length-i; j++)
+		      if (cards[j].sortCompare(cards[largest]) > 0) largest = j;
+		    swap(largest, cards.length-i-1);
+		  }
 	}
 	
-	private void swapCards(int i, int j) {
-		//swap the i card with the j card in the array
-		Card temp = cards[i];
-		cards[i] = cards[j];
-		cards[j] = temp;		
-	}
-	
-	
-	public void print() {
-		for(Card card : this.cards) {
-			System.out.println(card);
+	public Deck subDeck(int start, int end) {
+		Deck subDeck = new Deck(end-start);
+		for (int i = start, j = 0; i < end; i++, j++) {
+			subDeck.cards[j] = cards[i];
 		}
+		return subDeck;
 	}
-
+	
+	@Override
+	public String toString() {
+		StringBuilder retStr = new StringBuilder();
+		for (int i = 0; i < cards.length; i++) {
+			retStr.append(cards[i].toString());
+			if (i != cards.length-1) retStr.append(", ");
+			if (i%6 == 0 && i != 0) retStr.append("\n");
+		}
+		return retStr.toString();
+	}
 }
