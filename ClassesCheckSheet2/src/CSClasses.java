@@ -11,11 +11,15 @@ public class CSClasses {
 		
 		for (int i = 0; i < courseList.size(); i++) {
 			System.out.println(courseList.get(i).toString() + "\n");
+			printCourse(courseList.get(i));
 		}
 	}
 	
 	public static void printCourse(Course course) {
-		System.out.println("Room number: " + course.get);
+		System.out.print("Course: " + course.getCourseNum() + "\nNumber of students: " + course.getNumStuds() + "\nMaximum number of students: " + course.getMaxStuds() + "\nCredits: " + course.getCreds());
+		if (course instanceof InPersonCourse == true) System.out.print("\nRoom number: " + ((InPersonCourse)course).getRoomNum() + "\n\n");
+		if (course instanceof FullRemoteCourse == true) System.out.print("\nEmail: " + ((FullRemoteCourse)course).getEmail() + "\n\n");
+		if (course instanceof RealTimeRemoteCourse == true) System.out.print("\nZoom password: " + ((RealTimeRemoteCourse)course).getZoomPass() + "\n\n");
 	}
 
 }
