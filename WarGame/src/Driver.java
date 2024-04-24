@@ -4,7 +4,7 @@ public class Driver {
 
 	public static void main(String[] args) {	
 		
-		int runCount = 1000000;
+		int runCount = 100000;
 		int[] tieData = new int[runCount];
 		int tieCountBig = 0;
 		int p1count = 0;
