@@ -6,9 +6,15 @@ public class TicTacToe {
 
 	public static void main(String[] args) {
 		String[][] board = makeBoard();
-		printBoard(board);
-		makeMove(board, 1);
-		printBoard(board);
+		int turnCount = 0;
+		int player = 1;
+		
+		while (turnCount < 9) {
+			printBoard(board);
+			makeMove(board, player);
+			player = (player%2)+1;
+			printBoard(board);
+		}
 	}
 	
 	public static String[][] makeBoard() {
@@ -31,22 +37,18 @@ public class TicTacToe {
 		System.out.println();
 	}
 	
-	public static String[][] makeMove(String[][] board, int player) {
-		int choice = -1;
-		Scanner input = new Scanner(System.in);;
-		while ((choice < 1 || choice > 9) || !board[(choice - 1) / 3][(choice - 1) % 3].equals(String.valueOf(choice))) {
-			System.out.print("Player " + player + ", make your move: ");
-			choice = input.nextInt();
-		}
-		String fill = "X";
-		if (player == 2) fill = "O";
+	private static void makeMove(String[][] board, int player) {
+		int pick = -1;
+		Scanner input = new Scanner(System.in);
 		
-		for (int i = 0; i < 3; i++) {
-			for (int j = i; j < i+3; j++) {
-				if (((2*i)+j) == choice) board[i][j-i] = fill;
-			}
+		while (pick < 0 || pick > 8 || board[(pick)/3][(pick)%3].equals(String.valueOf(pick))) {
+			System.out.print("\nPlayer " + player + ", input your next move: ");
+			pick = input.nextInt();
 		}
-		player = (player%2)+1;
-		return board;
+		String piece = "O";
+		if (player == 1) {
+			piece = "X";
+		}
+		board[(pick) / 3][(pick) % 3] = piece;
 	}
 }
